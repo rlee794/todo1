@@ -55,8 +55,8 @@ class TodoDetailView(View):
 
 class NoteListView(View):
     def get(self, request):
-        '''GET the todo list homepage, listing all tasks in reverse order that they were created'''
-        note = Note.objects.all().order_by('-id')
+        '''GET the notes.html template, listing notes in proper order that they were created, newest at bottom'''
+        note = Note.objects.all().order_by('id')
         form = NoteForm()
 
         return render(
@@ -64,11 +64,11 @@ class NoteListView(View):
         )
 
     def post(self, request):
-        '''POST the data in the from submitted by the user, creating a new task in the todo list'''
+        '''POST the data in the from submitted by the user, creating a new note in the notes list'''
         form=NoteForm(request.POST)
         if form.is_valid():
             note_description = form.cleaned_data['description']
             Note.objects.create(text=note_description)
 
-        # "redirect" to the todo homepage
+        # "redirect" to the note page
         return redirect('note')
